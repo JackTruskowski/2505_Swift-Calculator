@@ -56,9 +56,9 @@ class ViewController: UIViewController {
     //enter button pressed
     @IBAction func enter() {
         userIsTyping = false
-        if let result = brain.pushOperand(displayValue){
+        if let result = brain.pushOperand(displayValue!){
             displayValue = result
-            history.text! += " \(displayValue)"
+            history.text! += " \(displayValue!)"
         } else {
             displayValue = 0
         }
@@ -82,12 +82,20 @@ class ViewController: UIViewController {
     }
     
     //variable for the calculator display
-    var displayValue: Double{
+    var displayValue: Double?{
         get {
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            if display.text != nil {
+                return NSNumberFormatter().numberFromString(display.text!)?.doubleValue
+            }
+            return nil
         }
         set {
-            display.text = "\(newValue)"
+            if let newDisplayText = newValue{
+                display.text = "\(newDisplayText)"
+            }else{
+                display.text = nil
+            }
+            userIsTyping = false
         }
     }
 

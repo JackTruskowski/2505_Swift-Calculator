@@ -14,10 +14,13 @@ class CalculatorBrain {
     
     private var knownOps = [String:Op]()
     
+    var variableValues: Dictionary<String,Double> = Dictionary<String,Double>()
+    
     private enum Op { //CustomDebug protocol
         case Operand(Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
+        case Variable(String)
         /*
         var description: String {
             get {
@@ -63,6 +66,11 @@ class CalculatorBrain {
                         return (operation(operand, operand2), operandEvaluation2.remainingOps)
                     }
                 }
+                
+            case .Variable(let variable):
+                if let varValue = variableValues[variable]{
+                    return (varValue, remainingOps)
+                }
             }
         }
         return (nil, ops) //stack is empty, kick
@@ -83,6 +91,16 @@ class CalculatorBrain {
         opStack.append(Op.Operand(operand))
         print("\(opStack)")
         return evaluate()
+    }
+    
+    func pushOperand(symbol: String) -> Double? {
+        opStack.append(Op.Variable(symbol))
+        print ("\(opStack)")
+        return evaluate()
+    }
+    
+    func setVariable(symbol: String, value: Double){
+        variableValues[symbol] = value
     }
     
     //calls evaluate() to perform an operation
