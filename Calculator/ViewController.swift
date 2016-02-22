@@ -62,7 +62,7 @@ class ViewController: UIViewController {
         } else {
             displayValue = 0
         }
-        
+        brain.printDescription()
     }
     
     //tells the brain to perform an operation

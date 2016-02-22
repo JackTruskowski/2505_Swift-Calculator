@@ -21,16 +21,6 @@ class CalculatorBrain {
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
         case Variable(String)
-        /*
-        var description: String {
-            get {
-                switch self {
-                case .Operand(let operand):
-                    return "\(operand)"
-                }
-            }
-        }
-        */
     }
     
     init(){
@@ -69,16 +59,48 @@ class CalculatorBrain {
                 
             case .Variable(let variable):
                 if let varValue = variableValues[variable]{
-                    return (varValue, remainingOps)
+                    return (varValue, remainingOps) //returns the value of a variable, or nil if it doesn't have a value
                 }
             }
         }
         return (nil, ops) //stack is empty, kick
     }
     
+    //recursively builds a string representation of the op stack
+    private func description(ops:[Op]) -> (history: String, remainingOps: [Op]){
+        while !ops.isEmpty{
+            var opStack = ops;
+            let op = opStack.removeLast()
+            
+            switch op {
+            case .Operand(let operand):
+                return ("\(operand)", opStack)
+            case .UnaryOperation(let name, _):
+                let recursiveResult = description(opStack)
+                let historyString = name + "(" + recursiveResult.history + ")"
+                return (historyString, opStack)
+            case .BinaryOperation(let name, _):
+                let firstResult = description(opStack)
+                let secondResult = description(firstResult.remainingOps)
+                let historyString = "(" + firstResult.history + name + secondResult.history + ")"
+                
+                return (historyString, opStack)
+            case .Variable(let name):
+                return (name, opStack)
+            }
+            
+            
+        }
+        return ("----", ops)
+    }
+    
     //removes everything from the opstack
     func clearOpStack(){
         opStack.removeAll()
+    }
+    
+    func printDescription(){
+        print(description(opStack).history)
     }
     
     //evaluates a result
