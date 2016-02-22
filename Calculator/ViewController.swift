@@ -24,8 +24,14 @@ class ViewController: UIViewController {
         print("digit = \(digit)")
         
         //check to make sure that the user hasn't already entered a period
-        if digit == "." && display.text!.rangeOfString(".") != nil{
-            return
+        if digit == "."{
+            if userIsTyping && display.text!.rangeOfString(".") != nil{
+                return
+            }else if !userIsTyping{
+                display.text = "0."
+                userIsTyping = true
+                return
+            }
         }
         
         //if pi is entered, automatically push it onto the stack
