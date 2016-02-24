@@ -69,29 +69,30 @@ class CalculatorBrain {
     //recursively builds a string representation of the op stack
     private func description(ops:[Op]) -> (history: String, remainingOps: [Op]){
         while !ops.isEmpty{
-            var opStack = ops;
-            let op = opStack.removeLast()
+            var remainingOps = ops;
+            let op = remainingOps.removeLast()
             
             switch op {
             case .Operand(let operand):
-                return ("\(operand)", opStack)
+                return ("\(operand)", remainingOps)
             case .UnaryOperation(let name, _):
-                let recursiveResult = description(opStack)
+                let recursiveResult = description(remainingOps)
+               
                 let historyString = name + "(" + recursiveResult.history + ")"
-                return (historyString, opStack)
-            case .BinaryOperation(let name, _):
-                let firstResult = description(opStack)
-                let secondResult = description(firstResult.remainingOps)
-                let historyString = "(" + firstResult.history + name + secondResult.history + ")"
+                return (historyString, recursiveResult.remainingOps)
                 
-                return (historyString, opStack)
+            case .BinaryOperation(let name, _):
+                let firstResult = description(remainingOps)
+                let secondResult = description(firstResult.remainingOps)
+                return (("(" + secondResult.history + name + firstResult.history + ")"), secondResult.remainingOps)
+                
             case .Variable(let name):
-                return (name, opStack)
+                return (name, remainingOps)
             }
             
             
         }
-        return ("----", ops)
+        return ("?", ops)
     }
     
     //removes everything from the opstack

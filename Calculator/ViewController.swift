@@ -58,10 +58,10 @@ class ViewController: UIViewController {
         userIsTyping = false
         if let result = brain.pushOperand(displayValue!){
             displayValue = result
-            history.text = brain.getDescription()
         } else {
             displayValue = 0
         }
+        history.text = brain.getDescription()
     }
     
     //tells the brain to perform an operation
@@ -72,10 +72,11 @@ class ViewController: UIViewController {
         if let operation = sender.currentTitle {
             if let result = brain.performOperation(operation){
                 displayValue = result
-                history.text = brain.getDescription()
             } else { //invalid operation, reset display to 0
                 displayValue = 0
             }
+            
+            history.text = brain.getDescription()
         }
      
     }
