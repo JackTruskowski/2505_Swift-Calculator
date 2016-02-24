@@ -29,9 +29,9 @@ class ViewController: UIViewController {
         }
         
         //if pi is entered, automatically push it onto the stack
-        if digit == "pi" {
+        if digit == "π" {
             displayValue = M_PI
-            enter()
+            brain.pushOperand("π")
             return
         }
         

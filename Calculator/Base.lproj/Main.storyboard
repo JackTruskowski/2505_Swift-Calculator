@@ -321,7 +321,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="32"/>
                                 <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <size key="titleShadowOffset" width="3" height="3"/>
-                                <state key="normal" title="pi">
+                                <state key="normal" title="π">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>

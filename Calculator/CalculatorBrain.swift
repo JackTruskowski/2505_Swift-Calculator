@@ -21,6 +21,7 @@ class CalculatorBrain {
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
         case Variable(String)
+        case Constant(String, Double)
     }
     
     init(){
@@ -33,6 +34,7 @@ class CalculatorBrain {
         knownOps["sin"] = Op.UnaryOperation("sin", sin)
         knownOps["cos"] = Op.UnaryOperation("cos", cos)
         knownOps["tan"] = Op.UnaryOperation("tan", tan)
+        knownOps["π"] = Op.Constant("π", M_PI)
     }
     
     //evaluates a result recursively using the operators/operands in the stack
@@ -61,6 +63,9 @@ class CalculatorBrain {
                 if let varValue = variableValues[variable]{
                     return (varValue, remainingOps) //returns the value of a variable, or nil if it doesn't have a value
                 }
+                
+            case .Constant(_, let value):
+                return(value, remainingOps)
             }
         }
         return (nil, ops) //stack is empty, kick
@@ -112,6 +117,9 @@ class CalculatorBrain {
                 
             case .Variable(let name):
                 return (name, remainingOps)
+                
+            case .Constant(let name, _):
+                return (name, remainingOps)
             }
             
             
@@ -137,7 +145,12 @@ class CalculatorBrain {
     }
     
     func pushOperand(symbol: String) -> Double? {
-        opStack.append(Op.Variable(symbol))
+        
+        if let constant = knownOps[symbol]{
+            opStack.append(constant)
+        }else{
+            opStack.append(Op.Variable(symbol))
+        }
        // print ("\(opStack)")
         return evaluate()
     }
