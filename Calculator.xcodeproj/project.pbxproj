@@ -103,9 +103,9 @@
 				231959701C5AA71400DB3314 /* ViewController.swift */,
 				231959721C5AA71400DB3314 /* Main.storyboard */,
 				235D58011C614BDD0096137F /* CalculatorBrain.swift */,
-				231959751C5AA71400DB3314 /* Assets.xcassets */,
 				231959771C5AA71400DB3314 /* LaunchScreen.storyboard */,
 				2319597A1C5AA71400DB3314 /* Info.plist */,
+				231959751C5AA71400DB3314 /* Assets.xcassets */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";

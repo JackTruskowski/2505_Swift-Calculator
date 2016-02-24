@@ -66,10 +66,28 @@ class CalculatorBrain {
         return (nil, ops) //stack is empty, kick
     }
     
-    var Description : String {
+    var description : String {
         get {
-            let theDescription = description(opStack)
-            return theDescription.history
+            var alreadyLooped = false
+            var builderString = ""
+            var opsCount = 0
+            var firstDescrip = description(opStack)
+            
+            repeat{
+                if(alreadyLooped == true){
+                    firstDescrip = description(firstDescrip.remainingOps)
+                    let tempString = firstDescrip.history + ", " + builderString
+                    builderString = tempString
+                }else{
+                    builderString += firstDescrip.history
+                }
+                
+                alreadyLooped = true
+                opsCount = firstDescrip.remainingOps.count
+                
+            }while opsCount > 0
+            
+            return builderString
         }
     }
     
