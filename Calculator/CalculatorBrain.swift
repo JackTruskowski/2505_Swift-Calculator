@@ -66,6 +66,13 @@ class CalculatorBrain {
         return (nil, ops) //stack is empty, kick
     }
     
+    var Description : String {
+        get {
+            let theDescription = description(opStack)
+            return theDescription.history
+        }
+    }
+    
     //recursively builds a string representation of the op stack
     private func description(ops:[Op]) -> (history: String, remainingOps: [Op]){
         while !ops.isEmpty{
@@ -98,10 +105,6 @@ class CalculatorBrain {
     //removes everything from the opstack
     func clearOpStack(){
         opStack.removeAll()
-    }
-    
-    func getDescription() -> String?{
-        return description(opStack).history
     }
     
     //evaluates a result

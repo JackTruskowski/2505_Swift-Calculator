@@ -48,9 +48,9 @@ class ViewController: UIViewController {
     //clear button pressed
     @IBAction func clearPressed(sender: UIButton) {
         //reset the op stack and display
-        history.text = " "
         brain.clearOpStack()
         displayValue = 0
+        history.text = " "
     }
     
     //enter button pressed
@@ -61,7 +61,6 @@ class ViewController: UIViewController {
         } else {
             displayValue = 0
         }
-        history.text = brain.getDescription()
     }
     
     //tells the brain to perform an operation
@@ -75,8 +74,6 @@ class ViewController: UIViewController {
             } else { //invalid operation, reset display to 0
                 displayValue = 0
             }
-            
-            history.text = brain.getDescription()
         }
      
     }
@@ -96,6 +93,8 @@ class ViewController: UIViewController {
                 display.text = nil
             }
             userIsTyping = false
+            
+            history.text = brain.Description
         }
     }
 
