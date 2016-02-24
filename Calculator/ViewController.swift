@@ -94,7 +94,7 @@ class ViewController: UIViewController {
             }
             userIsTyping = false
             
-            history.text = brain.description
+            history.text = brain.description + " = "
         }
     }
 

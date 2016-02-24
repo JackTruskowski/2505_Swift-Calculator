@@ -66,11 +66,11 @@ class CalculatorBrain {
         return (nil, ops) //stack is empty, kick
     }
     
+    //called by the view controller, calls the helper function and returns the string
     var description : String {
         get {
             var alreadyLooped = false
             var builderString = ""
-            var opsCount = 0
             var firstDescrip = description(opStack)
             
             repeat{
@@ -83,9 +83,8 @@ class CalculatorBrain {
                 }
                 
                 alreadyLooped = true
-                opsCount = firstDescrip.remainingOps.count
                 
-            }while opsCount > 0
+            }while firstDescrip.remainingOps.count > 0
             
             return builderString
         }
