@@ -28,13 +28,6 @@ class ViewController: UIViewController {
             return
         }
         
-        //if pi is entered, automatically push it onto the stack
-        if digit == "π" {
-            displayValue = M_PI
-            brain.pushOperand("π")
-            return
-        }
-        
         //check if user is typing to allow numbers >1 digit
         if userIsTyping {
             display.text = display.text! + digit
@@ -45,10 +38,46 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func setVariable(sender: UIButton) {
+        if let varValue = displayValue{
+            brain.variableValues["M"] = varValue
+            userIsTyping = false
+            if let result = brain.evaluate() {
+                displayValue = result
+            }else{
+                displayValue = 0
+            }
+        }
+    }
+    
+    
+    @IBAction func varConstPressed(sender: UIButton) {
+        
+        let varConst = sender.currentTitle!
+        
+        //if pi is entered, automatically push it onto the stack
+        if varConst == "π" {
+            displayValue = M_PI
+        }else{
+            displayValue = 0
+        }
+        
+        if let varValue = brain.variableValues[sender.currentTitle!]{
+            displayValue = varValue
+        }else{
+            displayValue = 0
+        }
+        
+        brain.pushOperand(sender.currentTitle!)
+        
+    }
+    
+    
     //clear button pressed
     @IBAction func clearPressed(sender: UIButton) {
         //reset the op stack and display
         brain.clearOpStack()
+        brain.variableValues.removeAll()
         displayValue = 0
         history.text = " "
     }
