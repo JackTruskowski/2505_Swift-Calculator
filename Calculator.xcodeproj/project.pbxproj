@@ -48,7 +48,7 @@
 		2319598A1C5AA71400DB3314 /* CalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2319598E1C5AA71400DB3314 /* CalculatorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorUITests.swift; sourceTree = "<group>"; };
 		231959901C5AA71400DB3314 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		235D58011C614BDD0096137F /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; };
+		235D58011C614BDD0096137F /* CalculatorBrain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorBrain.swift; sourceTree = "<group>"; usesTabs = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,9 +103,9 @@
 				231959701C5AA71400DB3314 /* ViewController.swift */,
 				231959721C5AA71400DB3314 /* Main.storyboard */,
 				235D58011C614BDD0096137F /* CalculatorBrain.swift */,
-				231959751C5AA71400DB3314 /* Assets.xcassets */,
 				231959771C5AA71400DB3314 /* LaunchScreen.storyboard */,
 				2319597A1C5AA71400DB3314 /* Info.plist */,
+				231959751C5AA71400DB3314 /* Assets.xcassets */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";

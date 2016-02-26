@@ -34,13 +34,6 @@ class ViewController: UIViewController {
             }
         }
         
-        //if pi is entered, automatically push it onto the stack
-        if digit == "pi" {
-            displayValue = M_PI
-            enter()
-            return
-        }
-        
         //check if user is typing to allow numbers >1 digit
         if userIsTyping {
             display.text = display.text! + digit
@@ -51,24 +44,58 @@ class ViewController: UIViewController {
         
     }
     
+    @IBAction func setVariable(sender: UIButton) {
+        if let varValue = displayValue{
+            brain.variableValues["M"] = varValue
+            userIsTyping = false
+            if let result = brain.evaluate() {
+                displayValue = result
+            }else{
+                displayValue = 0
+            }
+        }
+    }
+    
+    
+    @IBAction func varConstPressed(sender: UIButton) {
+        
+        let varConst = sender.currentTitle!
+        
+        //if pi is entered, automatically push it onto the stack
+        if varConst == "π" {
+            displayValue = M_PI
+        }else{
+            displayValue = 0
+        }
+        
+        if let varValue = brain.variableValues[sender.currentTitle!]{
+            displayValue = varValue
+        }else{
+            displayValue = 0
+        }
+        
+        brain.pushOperand(sender.currentTitle!)
+        
+    }
+    
+    
     //clear button pressed
     @IBAction func clearPressed(sender: UIButton) {
         //reset the op stack and display
-        history.text = ""
         brain.clearOpStack()
+        brain.variableValues.removeAll()
         displayValue = 0
+        history.text = " "
     }
     
     //enter button pressed
     @IBAction func enter() {
         userIsTyping = false
-        if let result = brain.pushOperand(displayValue){
+        if let result = brain.pushOperand(displayValue!){
             displayValue = result
-            history.text! += " \(displayValue)"
         } else {
             displayValue = 0
         }
-        
     }
     
     //tells the brain to perform an operation
@@ -79,7 +106,6 @@ class ViewController: UIViewController {
         if let operation = sender.currentTitle {
             if let result = brain.performOperation(operation){
                 displayValue = result
-                history.text! += " " + operation
             } else { //invalid operation, reset display to 0
                 displayValue = 0
             }
@@ -88,12 +114,22 @@ class ViewController: UIViewController {
     }
     
     //variable for the calculator display
-    var displayValue: Double{
+    var displayValue: Double?{
         get {
-            return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+            if display.text != nil {
+                return NSNumberFormatter().numberFromString(display.text!)?.doubleValue
+            }
+            return nil
         }
         set {
-            display.text = "\(newValue)"
+            if let newDisplayText = newValue{
+                display.text = "\(newDisplayText)"
+            }else{
+                display.text = nil
+            }
+            userIsTyping = false
+            
+            history.text = brain.description + " = "
         }
     }
 
