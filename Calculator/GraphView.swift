@@ -25,14 +25,17 @@ class GraphView: UIView {
     
     weak var dataSource: GraphViewDataSource?
     
-    // Only override drawRect: if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
+    //Constants
+    private struct Scaling {
+        static let PointsPerUnit: CGFloat = 100.0
+    }
+    
     override func drawRect(rect: CGRect) {
         // Drawing code
         if(!didSetOrigin){
             origin = CGPointMake(rect.width/2, rect.height/2)
         }
-        graphAxes.drawAxesInRect(rect, origin: origin, pointsPerUnit: 100*scale)
+        graphAxes.drawAxesInRect(rect, origin: origin, pointsPerUnit: Scaling.PointsPerUnit*scale)
         didSetOrigin = true
         
     }
