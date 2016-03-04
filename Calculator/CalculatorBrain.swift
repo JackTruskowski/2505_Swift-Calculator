@@ -61,7 +61,6 @@ class CalculatorBrain {
                 
             case .Variable(let variable):
                 if let varValue = variableValues[variable]{
-                    print("variable value = ", varValue)
                     return (varValue, remainingOps) //returns the value of a variable, or nil if it doesn't have a value
                 }
                 
