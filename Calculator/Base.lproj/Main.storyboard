@@ -533,7 +533,6 @@
         <!--Graph View Controller-->
         <scene sceneID="xt8-Mj-SdR">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="M2h-LO-4TW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="PtP-ZS-m9j" customClass="GraphViewController" customModule="Calculator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pKe-8R-TDJ"/>
@@ -542,10 +541,23 @@
                     <view key="view" contentMode="scaleToFill" id="9oG-3B-gAs">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VdT-nt-kCh" customClass="GraphView" customModule="Calculator" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="VdT-nt-kCh" secondAttribute="trailing" id="C80-RM-S1n"/>
+                            <constraint firstItem="VdT-nt-kCh" firstAttribute="bottom" secondItem="AZw-fX-gVq" secondAttribute="top" id="Kkd-6N-mtR"/>
+                            <constraint firstItem="VdT-nt-kCh" firstAttribute="leading" secondItem="9oG-3B-gAs" secondAttribute="leading" id="Nej-OM-giJ"/>
+                            <constraint firstItem="VdT-nt-kCh" firstAttribute="top" secondItem="9oG-3B-gAs" secondAttribute="top" id="b3b-h5-vVn"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="M0N-Um-YZv"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M2h-LO-4TW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2199" y="1216"/>
         </scene>
