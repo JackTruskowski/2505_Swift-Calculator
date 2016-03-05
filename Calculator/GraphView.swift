@@ -51,10 +51,22 @@ class GraphView: UIView {
     //for panning
     func origin(gesture: UIPanGestureRecognizer){
         if gesture.state == .Changed {
+            print("panning")
             let translation = gesture.translationInView(gesture.view)
             origin = CGPoint(x:origin.x + translation.x, y:origin.y + translation.y)
             gesture.setTranslation(CGPointZero, inView: gesture.view)
         }
+    }
+    
+    //double tap
+    func doubleTapped (gesture: UITapGestureRecognizer) {
+        
+        print("Changing origin1...")
+        //if gesture.state == .Changed {
+            print("Changing origin...")
+            let newOrigin = gesture.locationInView(gesture.view)
+            origin = newOrigin
+        //}
     }
     
 
