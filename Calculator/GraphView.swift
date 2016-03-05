@@ -91,7 +91,7 @@ class GraphView: UIView {
     }
     
     private func convertFromY(y: CGFloat)->CGFloat {
-        return ((y*Scaling.PointsPerUnit)/(1/scale)) + origin.y
+        return ((-y*Scaling.PointsPerUnit)/(1/scale) + origin.y)
     }
     
     
