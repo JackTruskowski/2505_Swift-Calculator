@@ -76,27 +76,29 @@ class GraphView: UIView {
         //drawing of the function (if it exists)
         if let descripString = dataSource?.getDescriptionString(self){
             color.set()
+            
             let path = UIBezierPath()
             for var i=0; i<Int(rect.width)-1; i++ {
                 path.moveToPoint(CGPoint(x:CGFloat(i), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i)))!)))
-                path.addLineToPoint(CGPoint(x:CGFloat(i+1), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i+1)))!)))
+                
+                let newY = dataSource?.getYValForXVal(self, x: convertX(i+1))
+                if((newY != nil && newY?.isFinite != nil && newY?.isNormal != nil && newY?.isZero != nil)){
+                    path.addLineToPoint(CGPoint(x:CGFloat(i+1), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i+1)))!)))
+                }
             }
             path.stroke()
         }
         
     }
     
+    //converts from a pixel's X value to an X value on the graph
     private func convertX(x: Int)->CGFloat {
         return ((CGFloat(x) - origin.x)/(scale*Scaling.PointsPerUnit))
     }
     
+    //converts from a Y value on the graph to a pixel's Y value
     private func convertFromY(y: CGFloat)->CGFloat {
         return ((-y*Scaling.PointsPerUnit)/(1/scale) + origin.y)
-    }
-    
-    
-    func align(coordinate: CGFloat)->CGFloat{
-        return round(coordinate * scaleFactor)/scaleFactor
     }
     
     //scale from a pinch gesture

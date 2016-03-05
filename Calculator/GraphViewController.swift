@@ -12,7 +12,7 @@ import UIKit
 class GraphViewController: UIViewController, GraphViewDataSource {
 
     func getYValForXVal(sender: GraphView, x: CGFloat) -> CGFloat? {
-        return sin(x)
+        return tan(x)
     }
     
     func getDescriptionString(sender: GraphView) -> String? {
