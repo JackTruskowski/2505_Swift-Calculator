@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CalculatorViewController: UIViewController {
+class CalculatorViewController: UIViewController, GraphViewDataSource {
 
     @IBOutlet weak var display: UILabel!
    
@@ -17,6 +17,36 @@ class CalculatorViewController: UIViewController {
     var userIsTyping = false
     
     var brain = CalculatorBrain()
+    
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let identifier = segue.identifier{
+            switch identifier{
+                case "GraphSegue":
+                    if let vc = segue.destinationViewController as? GraphViewController{
+                        vc.theDataSource = self
+                }
+            default:
+                break
+            }
+        }
+    }
+    
+    
+    func getYValForXVal(sender: GraphView, x: CGFloat) -> CGFloat? {
+        brain.variableValues["M"] = Double(x)
+        //print(brain.variableValues["M"]!)
+        print(brain.evaluate())
+        if let evaluateResult = brain.evaluate(){
+            return CGFloat(evaluateResult)
+        }else{
+            return nil
+        }
+    }
+    
+    func getDescriptionString(sender: GraphView) -> String? {
+        return "sin(x)"
+    }
     
     //a digit button / . / pi has been pressed
     @IBAction func digitPressed(sender: UIButton) {
@@ -47,6 +77,7 @@ class CalculatorViewController: UIViewController {
     @IBAction func setVariable(sender: UIButton) {
         if let varValue = displayValue{
             brain.variableValues["M"] = varValue
+            print(brain.variableValues["M"])
             userIsTyping = false
             if let result = brain.evaluate() {
                 displayValue = result

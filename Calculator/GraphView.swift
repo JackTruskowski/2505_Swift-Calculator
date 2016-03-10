@@ -24,6 +24,7 @@ class GraphView: UIView {
     
     @IBInspectable var scale: CGFloat = 1.0 { didSet { setNeedsDisplay() }}
     @IBInspectable var origin: CGPoint = CGPointMake(0.0, 0.0) { didSet { setNeedsDisplay() }}
+    
     var scaleFactor: CGFloat = 1 // set this from UIView's contentScaleFactor to position axes with maximum accuracy
     var color = UIColor.blackColor()
     
@@ -38,21 +39,8 @@ class GraphView: UIView {
         static let PointsPerUnit: CGFloat = 100.0
     }
     
-//    func drawAxesInRect(bounds: CGRect, origin: CGPoint, pointsPerUnit: CGFloat)
-//    {
-//        CGContextSaveGState(UIGraphicsGetCurrentContext())
-//        color.set()
-//        let path = UIBezierPath()
-//        path.moveToPoint(CGPoint(x: bounds.minX, y: align(origin.y)))
-//        path.addLineToPoint(CGPoint(x: bounds.maxX, y: align(origin.y)))
-//        path.moveToPoint(CGPoint(x: align(origin.x), y: bounds.minY))
-//        path.addLineToPoint(CGPoint(x: align(origin.x), y: bounds.maxY))
-//        path.stroke()
-//        drawHashmarksInRect(bounds, origin: origin, pointsPerUnit: abs(pointsPerUnit))
-//        CGContextRestoreGState(UIGraphicsGetCurrentContext())
-//    }
-    
     override func drawRect(rect: CGRect) {
+        
         // Drawing code
         if(!didSetOrigin){
             origin = CGPointMake(rect.width/2, rect.height/2)
@@ -60,31 +48,23 @@ class GraphView: UIView {
         graphAxes.drawAxesInRect(rect, origin: origin, pointsPerUnit: Scaling.PointsPerUnit*scale)
         didSetOrigin = true
         
-        print(convertX(Int(rect.width)/2 - 5))
-        print(convertX(Int(rect.width)/2))
-        print(convertX(Int(rect.width)/2 + 5))
-        
-        print(dataSource?.getYValForXVal(self, x: convertX(Int(rect.width)/2 - 5)))
-        print(dataSource?.getYValForXVal(self, x: convertX(Int(rect.width)/2)))
-        print(dataSource?.getYValForXVal(self, x: convertX(Int(rect.width)/2 + 5)))
-        
-        print(convertFromY((dataSource?.getYValForXVal(self, x: convertX(Int(rect.width)/2 - 5)))!))
-        print(convertFromY((dataSource?.getYValForXVal(self, x: convertX(Int(rect.width)/2)))!))
-        print(convertFromY((dataSource?.getYValForXVal(self, x: convertX(Int(rect.width)/2 + 5)))!))
-        
-        
         //drawing of the function (if it exists)
         if let descripString = dataSource?.getDescriptionString(self){
             color.set()
             
             let path = UIBezierPath()
             for var i=0; i<Int(rect.width)-1; i++ {
-                path.moveToPoint(CGPoint(x:CGFloat(i), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i)))!)))
-                
-                let newY = dataSource?.getYValForXVal(self, x: convertX(i+1))
-                if((newY != nil && newY?.isFinite != nil && newY?.isNormal != nil && newY?.isZero != nil)){
-                    path.addLineToPoint(CGPoint(x:CGFloat(i+1), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i+1)))!)))
+                //print("%f",dataSource?.getYValForXVal(self, x: convertX(i)))
+                if let newY = dataSource?.getYValForXVal(self, x: convertX(i)){
+                    path.moveToPoint(CGPoint(x:CGFloat(i), y:convertFromY((newY))))
+                    
+                    if let newY2 = dataSource?.getYValForXVal(self, x: convertX(i+1)){
+                        //if((newY2.isFinite && newY2.isNormal && newY2.isZero)){
+                        path.addLineToPoint(CGPoint(x:CGFloat(i+1), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i+1)))!)))
+                        //}
+                    }
                 }
+                
             }
             path.stroke()
         }

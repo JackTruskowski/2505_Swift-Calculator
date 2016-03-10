@@ -134,6 +134,7 @@ class CalculatorBrain {
     
     //evaluates a result
     func evaluate() -> Double? {
+        print(" \(opStack)")
         return evaluate(opStack).result
     }
     
