@@ -9,14 +9,18 @@
 import UIKit
 
 
-class GraphViewController: UIViewController {
+class GraphViewController: CalculatorViewController {
     //property graphviewdatasource, set on segue from calculatorviewcontroller
-
-    var theDataSource: GraphViewDataSource;
+    
+    weak var gViewDataSource : GraphViewDataSource?
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     @IBOutlet weak var graphView: GraphView!{
         didSet {
-            graphView.dataSource = theDataSource
+            graphView.dataSource = gViewDataSource
             graphView.addGestureRecognizer(UIPinchGestureRecognizer(target: graphView, action: "scale:"))
             graphView.addGestureRecognizer(UIPanGestureRecognizer(target: graphView, action: "origin:"))
             

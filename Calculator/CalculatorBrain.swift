@@ -134,14 +134,12 @@ class CalculatorBrain {
     
     //evaluates a result
     func evaluate() -> Double? {
-        print(" \(opStack)")
         return evaluate(opStack).result
     }
     
     //push an operand onto the opStack
     func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
-        //print("\(opStack)")
         return evaluate()
     }
     
@@ -152,7 +150,6 @@ class CalculatorBrain {
         }else{
             opStack.append(Op.Variable(symbol))
         }
-       // print ("\(opStack)")
         return evaluate()
     }
     
@@ -164,7 +161,6 @@ class CalculatorBrain {
     func performOperation(symbol: String) -> Double? {
         if let operation = knownOps[symbol]{
             opStack.append(operation)
-            //print("\(opStack)")
             return evaluate()
         }
         return nil

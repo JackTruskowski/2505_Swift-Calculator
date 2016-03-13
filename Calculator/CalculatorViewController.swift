@@ -20,23 +20,20 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
     
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let identifier = segue.identifier{
-            switch identifier{
-                case "GraphSegue":
-                    if let vc = segue.destinationViewController as? GraphViewController{
-                        vc.theDataSource = self
-                }
-            default:
-                break
-            }
+        var destination = segue.destinationViewController
+        if let navCon = destination as? UINavigationController {
+            destination = navCon.visibleViewController!
+        }
+        if let vc = destination as? GraphViewController{
+            vc.gViewDataSource = self
+        
         }
     }
     
     
     func getYValForXVal(sender: GraphView, x: CGFloat) -> CGFloat? {
         brain.variableValues["M"] = Double(x)
-        //print(brain.variableValues["M"]!)
-        print(brain.evaluate())
+        //print(brain.evaluate())
         if let evaluateResult = brain.evaluate(){
             return CGFloat(evaluateResult)
         }else{
@@ -51,7 +48,6 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
     //a digit button / . / pi has been pressed
     @IBAction func digitPressed(sender: UIButton) {
         let digit = sender.currentTitle!
-        print("digit = \(digit)")
         
         //check to make sure that the user hasn't already entered a period
         if digit == "."{
@@ -77,7 +73,6 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
     @IBAction func setVariable(sender: UIButton) {
         if let varValue = displayValue{
             brain.variableValues["M"] = varValue
-            print(brain.variableValues["M"])
             userIsTyping = false
             if let result = brain.evaluate() {
                 displayValue = result
