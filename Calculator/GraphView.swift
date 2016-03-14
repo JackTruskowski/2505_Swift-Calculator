@@ -10,7 +10,6 @@ import UIKit
 
 protocol GraphViewDataSource : class {
     func getYValForXVal(sender: GraphView, x: CGFloat)->CGFloat?
-    func getDescriptionString(sender: GraphView)->String?
 }
 
 @IBDesignable
@@ -39,6 +38,13 @@ class GraphView: UIView {
         static let PointsPerUnit: CGFloat = 100.0
     }
     
+    
+    /*
+        All drawing done here
+            >Draws Axes
+            >Draws the function
+        Updated whenever the graph button is pressed, or the origin / scale is updated via gestures
+    */
     override func drawRect(rect: CGRect) {
         
         // Drawing code
@@ -47,27 +53,33 @@ class GraphView: UIView {
         }
         graphAxes.drawAxesInRect(rect, origin: origin, pointsPerUnit: Scaling.PointsPerUnit*scale)
         didSetOrigin = true
+        color.set()
         
-        //drawing of the function (if it exists)
-        if let descripString = dataSource?.getDescriptionString(self){
-            color.set()
+        //draw the line
+        let path = UIBezierPath()
         
-            let path = UIBezierPath()
-            for var i=0; i<Int(rect.width)-1; i++ {
-                //print("%f",dataSource?.getYValForXVal(self, x: convertX(i)))
-                if let newY = dataSource?.getYValForXVal(self, x: convertX(i)){
-                    path.moveToPoint(CGPoint(x:CGFloat(i), y:convertFromY((newY))))
-                    
-                    if let newY2 = dataSource?.getYValForXVal(self, x: convertX(i+1)){
-                        //if((newY2.isFinite && newY2.isNormal && newY2.isZero)){
-                        path.addLineToPoint(CGPoint(x:CGFloat(i+1), y:convertFromY((dataSource?.getYValForXVal(self, x: convertX(i+1)))!)))
-                        //}
-                    }
-                }
+        var drawLineFromPrevPoint = false
+        
+        //go through all X pixels on the screen
+        for var i=0; i<Int(rect.width)-1; i++ {
+            
+            //get the corresponding Y val
+            if let newY = dataSource?.getYValForXVal(self, x: convertX(i)){
                 
+                //this was a valid point, draw line to this point
+                if(drawLineFromPrevPoint == true){
+                    path.addLineToPoint(CGPoint(x:CGFloat(i), y:convertFromY(newY)))
+                    drawLineFromPrevPoint = true
+                }else{
+                    //last point was not valid, just move to this point
+                    path.moveToPoint(CGPoint(x:CGFloat(i), y:convertFromY(newY)))
+                    drawLineFromPrevPoint = true
+                }
+            }else{
+                drawLineFromPrevPoint = false
             }
-            path.stroke()
         }
+        path.stroke()
         
     }
     

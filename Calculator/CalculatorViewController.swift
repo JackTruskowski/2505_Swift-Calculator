@@ -18,7 +18,7 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
     
     var brain = CalculatorBrain()
     
-    
+    //Does setup when the view segues to the GraphView
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         var destination = segue.destinationViewController
         if let navCon = destination as? UINavigationController {
@@ -26,25 +26,31 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
         }
         
         if let vc = destination as? GraphViewController{
+            
+            //Set the data source and update the description label
             vc.gViewDataSource = self
             vc.labelText = brain.mostRecentDescription
             
         }
     }
     
-    
+    //Evaluates a corresponding Y val for a given X value on the graph
     func getYValForXVal(sender: GraphView, x: CGFloat) -> CGFloat? {
+        
+        //save the value of the brain
+        let tempVal = brain.variableValues["M"]
         brain.variableValues["M"] = Double(x)
-        //print(brain.evaluate())
-        if let evaluateResult = brain.evaluate(){
-            return CGFloat(evaluateResult)
+        
+        //evaluate the put the old value back into the dictionary
+        let evaluateResult = brain.evaluate()
+        brain.variableValues["M"] =  tempVal
+        
+        //return nil if the result was invalid (typically nil or infinity)
+        if isfinite(evaluateResult!) && evaluateResult != nil{
+            return CGFloat(evaluateResult!)
         }else{
             return nil
         }
-    }
-    
-    func getDescriptionString(sender: GraphView) -> String? {
-        return "sin(x)"
     }
     
     //a digit button / . / pi has been pressed
@@ -72,6 +78,7 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
         
     }
     
+    //Sets the value of the "M" variable
     @IBAction func setVariable(sender: UIButton) {
         if let varValue = displayValue{
             brain.variableValues["M"] = varValue
@@ -84,7 +91,7 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
         }
     }
     
-    
+    //Called when a variable or constant button is pressed -- pushes it onto the brain's stack
     @IBAction func varConstPressed(sender: UIButton) {
         
         let varConst = sender.currentTitle!
