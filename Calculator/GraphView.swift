@@ -51,7 +51,7 @@ class GraphView: UIView {
         //drawing of the function (if it exists)
         if let descripString = dataSource?.getDescriptionString(self){
             color.set()
-            
+        
             let path = UIBezierPath()
             for var i=0; i<Int(rect.width)-1; i++ {
                 //print("%f",dataSource?.getYValForXVal(self, x: convertX(i)))

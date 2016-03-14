@@ -24,9 +24,11 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
         if let navCon = destination as? UINavigationController {
             destination = navCon.visibleViewController!
         }
+        
         if let vc = destination as? GraphViewController{
             vc.gViewDataSource = self
-        
+            vc.labelText = brain.mostRecentDescription
+            
         }
     }
     

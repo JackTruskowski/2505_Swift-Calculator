@@ -13,10 +13,14 @@ class GraphViewController: CalculatorViewController {
     //property graphviewdatasource, set on segue from calculatorviewcontroller
     
     weak var gViewDataSource : GraphViewDataSource?
+    var labelText = " " //this is set by the CalculatorViewController to update the description
+    
+    @IBOutlet weak var descriptionLabel: UILabel!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
     
     @IBOutlet weak var graphView: GraphView!{
         didSet {
@@ -28,6 +32,9 @@ class GraphViewController: CalculatorViewController {
             let doubleTap = UITapGestureRecognizer(target: graphView, action: "doubleTapped:")
             doubleTap.numberOfTapsRequired = 2
             graphView.addGestureRecognizer(doubleTap)
+            
+            //update description
+            descriptionLabel.text = labelText
             
         }
     }

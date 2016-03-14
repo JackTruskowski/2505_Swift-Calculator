@@ -95,6 +95,13 @@ class CalculatorBrain {
         }
     }
     
+    //returns just the last set of operations on the brain's stack (for the graph's description)
+    var mostRecentDescription : String {
+        get {
+            return description(opStack).history
+        }
+    }
+    
     //recursively builds a string representation of the op stack
     private func description(ops:[Op]) -> (history: String, remainingOps: [Op]){
         while !ops.isEmpty{
@@ -124,8 +131,9 @@ class CalculatorBrain {
             
             
         }
-        return ("?", ops)
+        return (" ", ops)
     }
+    
     
     //removes everything from the opstack
     func clearOpStack(){
