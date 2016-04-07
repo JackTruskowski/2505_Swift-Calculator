@@ -81,7 +81,11 @@ class CalculatorBrain {
             repeat{
                 if(alreadyLooped == true){
                     firstDescrip = description(firstDescrip.remainingOps)
-                    let tempString = firstDescrip.history + ", " + builderString
+                    
+                    let updatedHistory = removeOutsideParens(firstDescrip.history)
+                    let secondString = removeOutsideParens(builderString)
+                    
+                    let tempString = updatedHistory + ", " + secondString
                     builderString = tempString
                 }else{
                     builderString += firstDescrip.history
@@ -91,47 +95,79 @@ class CalculatorBrain {
                 
             }while firstDescrip.remainingOps.count > 0
             
-            return builderString
+            let finalString = removeOutsideParens(builderString)
+            
+            return finalString
         }
     }
     
     //returns just the last set of operations on the brain's stack (for the graph's description)
     var mostRecentDescription : String {
         get {
-            return description(opStack).history
+            let temp = description(opStack).history
+            let finalString = removeOutsideParens(temp)
+            return finalString
         }
     }
     
     //recursively builds a string representation of the op stack
     private func description(ops:[Op]) -> (history: String, remainingOps: [Op]){
         while !ops.isEmpty{
-            var remainingOps = ops;
-            let op = remainingOps.removeLast()
+            var remainOps = ops;
+            let op = remainOps.removeLast()
             
             switch op {
             case .Operand(let operand):
-                return ("\(operand)", remainingOps)
+                return ("\(operand)", remainOps)
             case .UnaryOperation(let name, _):
-                let recursiveResult = description(remainingOps)
+                let recursiveResult = description(remainOps)
                
                 let historyString = name + "(" + recursiveResult.history + ")"
                 return (historyString, recursiveResult.remainingOps)
                 
             case .BinaryOperation(let name, _):
-                let firstResult = description(remainingOps)
+                let firstResult = description(remainOps)
                 let secondResult = description(firstResult.remainingOps)
-                return (("(" + secondResult.history + name + firstResult.history + ")"), secondResult.remainingOps)
+                
+                print(firstResult.remainingOps.count, " ", remainOps.count)
+                if(secondResult.remainingOps.count != firstResult.remainingOps.count){
+                    return (("(" + secondResult.history + name + firstResult.history + ")"), secondResult.remainingOps)
+                }else{
+                    return ((secondResult.history + name + firstResult.history), secondResult.remainingOps)
+                }
                 
             case .Variable(let name):
-                return (name, remainingOps)
+                return (name, remainOps)
                 
             case .Constant(let name, _):
-                return (name, remainingOps)
+                return (name, remainOps)
             }
             
             
         }
         return (" ", ops)
+    }
+    
+    //removes the outermost parentheses from the expression (if they exist)
+    func removeOutsideParens(descripString: String) -> String {
+        
+        if(descripString == "" || descripString.characters.count<3){
+            return descripString
+        }
+        
+        
+        let firstChar = descripString.substringWithRange(Range<String.Index>(start: descripString.startIndex, end: descripString.startIndex.advancedBy(1)))
+        let lastChar = descripString.substringWithRange(Range<String.Index>(start: descripString.endIndex.advancedBy(-1), end: descripString.endIndex))
+        
+        var returnString = ""
+    
+        if(firstChar == "(" && lastChar == ")"){
+            returnString = descripString.substringWithRange(Range<String.Index>(start: descripString.startIndex.advancedBy(1), end: descripString.endIndex.advancedBy(-1)))
+        }else{
+            returnString = descripString
+        }
+        
+        return returnString
     }
     
     

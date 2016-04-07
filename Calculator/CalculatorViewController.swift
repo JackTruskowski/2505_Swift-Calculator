@@ -46,7 +46,7 @@ class CalculatorViewController: UIViewController, GraphViewDataSource {
         brain.variableValues["M"] =  tempVal
         
         //return nil if the result was invalid (typically nil or infinity)
-        if isfinite(evaluateResult!) && evaluateResult != nil{
+        if evaluateResult != nil && isfinite(evaluateResult!){
             return CGFloat(evaluateResult!)
         }else{
             return nil
